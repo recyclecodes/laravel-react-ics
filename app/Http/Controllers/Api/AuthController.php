@@ -31,7 +31,7 @@ class AuthController extends Controller
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            return $this->sendError('Server Error', [$e->getMessage()], 500);
+            return $this->sendError('Internal Server Error', ['error' => $e->getMessage()], 500);
         }
 
 
