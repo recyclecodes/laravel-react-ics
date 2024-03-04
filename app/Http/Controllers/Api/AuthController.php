@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\AuthLoginRequest;
-use App\Http\Requests\AuthRegisterRequest;
-use Illuminate\Http\Request;
-use Workbench\App\Models\User;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\AuthLoginRequest;
+use Illuminate\Support\Facades\Request;
+use App\Http\Requests\AuthRegisterRequest;
 
 class AuthController extends Controller
 {
@@ -59,5 +59,16 @@ class AuthController extends Controller
             DB::rollBack();
             return $this->sendError('Internal Server Error', ['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function logout()
+    {
+
+        auth()->user()->token()->revoke();
+
+        return response()->json([
+            "status" => true,
+            "message" => "User logged out"
+        ]);
     }
 }
