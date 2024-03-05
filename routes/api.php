@@ -25,11 +25,20 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 //Prvate Routes
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', function (Request $request) {
-        return $request->user();
+Route::group(['middleware' => 'role:Super Admin'], function() {
+    Route::get('/super-admin', function() {
+        return response([
+            'res' => 'Welcome!'
+        ]);
     });
-
-    Route::apiResource('/users', UserController::class);
 });
+
+Route::group(['middleware' => 'role:Super Admin', 'role: Admin'], function() {
+    Route::get('/admin', function() {
+        return response([
+            'res' => 'Welcome!'
+        ]);
+    });
+});
+
+

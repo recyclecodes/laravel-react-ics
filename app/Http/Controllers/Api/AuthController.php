@@ -47,6 +47,7 @@ class AuthController extends Controller
         try {
             $input['password'] = bcrypt($input['password']);
             $user = User::create($input);
+            $user->assignRole('User');
 
             // Generating token
             $success['token'] = $user->createToken('MyToken')->accessToken;
