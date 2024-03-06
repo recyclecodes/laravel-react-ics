@@ -1,11 +1,11 @@
-import AuthPage from "./pages";
+import AuthLayout from "./pages/AuthLayout";
 
 
 function App() {
   
   return (
     <>
-      <AuthPage/>
+      <AuthLayout/>
     </>
   );
 }
