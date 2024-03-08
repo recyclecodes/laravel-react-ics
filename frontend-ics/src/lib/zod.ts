@@ -22,11 +22,11 @@ export const registerSchema = z
         /[A-Za-z]/,
         'The password field must contain at least one uppercase and one lowercase letter.'
       ),
-    confirm_password: z.string(),
+    password_confirmation: z.string(),
   })
-  .refine((data) => data.password === data.confirm_password, {
+  .refine((data) => data.password === data.password_confirmation, {
     message: 'The confirm password field must match password.',
-    path: ['confirm_password'],
+    path: ['password_confirmation'],
   });
 export type RegisterFields = z.infer<typeof registerSchema>;
 

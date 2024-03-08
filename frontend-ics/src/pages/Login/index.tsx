@@ -9,6 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginFields, loginSchema } from '@/lib/zod';
 import { useState } from 'react';
+import Axios from '@/lib/axios';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -16,7 +17,6 @@ export const LoginAuthForm = ({ className, ...props }: UserAuthFormProps) => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isSubmitting },
   } = useForm<LoginFields>({
     resolver: zodResolver(loginSchema),
@@ -26,32 +26,18 @@ export const LoginAuthForm = ({ className, ...props }: UserAuthFormProps) => {
   const togglePassVisiblity = () => {
     setPasswordShown(passwordShown ? false : true);
   };
-  // const [isSubmitting, setisSubmitting] = React.useState<boolean>(false);
-  //   const [variant, setVariant] = useState('login');
-
-  //   const toggleVariant = useCallback(() => {
-  //     setVariant((currenVariant) =>
-  //       currenVariant == 'login' ? 'register' : 'login'
-  //     );
-  //   }, []);
-
-  // async function onSubmit(event: React.SyntheticEvent) {
-  //   event.preventDefault();
-  //   setisSubmitting(true);
-
-  //   setTimeout(() => {
-  //     setisSubmitting(false);
-  //   }, 3000);
-  // }
 
   const onSubmit: SubmitHandler<LoginFields> = async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      const user = await Axios.post('/login', data);
+      window.localStorage.setItem('token', user.data.data.token);
+      window.localStorage.setItem('user', JSON.stringify(user.data.data.name));
+
+      console.log('user >>>>>>', JSON.stringify(user.data.data.name));
       console.log(data);
     } catch (error) {
-      setError('root', {
-        message: 'This email is already taken',
-      });
+      console.log(error);
     }
   };
 
@@ -63,16 +49,18 @@ export const LoginAuthForm = ({ className, ...props }: UserAuthFormProps) => {
         </h1>
         <p className="text-sm text-muted-foreground">
           Don't have an account?{' '}
-          <span className="text-primary hover:underline cursor-pointer">
-            Sign-up
-          </span>
+          <a href="/register">
+            <span className="text-primary hover:underline cursor-pointer">
+              Sign-up
+            </span>
+          </a>
         </p>
       </div>
       <div className={cn('grid gap-6', className)} {...props}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-2">
             <div className="grid gap-1">
-              <Label className="sr-only" htmlFor="email">
+              <Label className="not-sr-only" htmlFor="email">
                 Email
               </Label>
               <Input
@@ -92,10 +80,10 @@ export const LoginAuthForm = ({ className, ...props }: UserAuthFormProps) => {
               )}
             </div>
             <div className="grid gap-1">
+              <Label className="not-sr-only" htmlFor="email">
+                Password
+              </Label>
               <div className="flex relative gap-1">
-                <Label className="sr-only" htmlFor="email">
-                  Password
-                </Label>
                 <Input
                   {...register('password')}
                   id="password"

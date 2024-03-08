@@ -1,11 +1,14 @@
-import AuthLayout from "./pages/AuthLayout";
+// import AuthLayout from "./pages/AuthLayout";
+
+import Dashboard from "./pages/Dashboard";
 
 
 function App() {
   
   return (
     <>
-      <AuthLayout/>
+      {/* <AuthLayout/> */}
+      <Dashboard/>
     </>
   );
 }

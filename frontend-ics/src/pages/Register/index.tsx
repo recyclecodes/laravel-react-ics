@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -9,6 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterFields, registerSchema } from '@/lib/zod';
 import { useState } from 'react';
+import Axios from '@/lib/axios';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -19,29 +21,11 @@ export const RegisterAuthForm = ({
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFields>({
     resolver: zodResolver(registerSchema),
   });
 
-  // const [isSubmitting, setisSubmitting] = React.useState<boolean>(false);
-  // const [variant, setVariant] = useState('login');
-
-  // const toggleVariant = useCallback(() => {
-  //   setVariant((currenVariant) =>
-  //     currenVariant == 'login' ? 'register' : 'login'
-  //   );
-  // }, []);
-
-  // async function onSubmit(event: React.SyntheticEvent) {
-  //   event.preventDefault();
-  //   setisSubmitting(true);
-
-  //   setTimeout(() => {
-  //     setisSubmitting(false);
-  //   }, 3000);
-  // }
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePassVisiblity = () => {
     setPasswordShown(passwordShown ? false : true);
@@ -50,11 +34,10 @@ export const RegisterAuthForm = ({
   const onSubmit: SubmitHandler<RegisterFields> = async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      await Axios.post('/register', data);
       console.log(data);
     } catch (error) {
-      setError('root', {
-        message: 'This email is already taken',
-      });
+      console.log(error);
     }
   };
 
@@ -66,9 +49,14 @@ export const RegisterAuthForm = ({
         </h1>
         <p className="text-sm text-muted-foreground">
           Already have an account?{' '}
-          <span className="text-primary hover:underline cursor-pointer">
-            Sign-in
-          </span>
+          <a
+            href="
+          /login"
+          >
+            <span className="text-primary hover:underline cursor-pointer">
+              Sign-in
+            </span>
+          </a>
         </p>
       </div>
       <div className={cn('grid gap-6', className)} {...props}>
@@ -153,8 +141,8 @@ export const RegisterAuthForm = ({
                 Confirm Password
               </Label>
               <Input
-                {...register('confirm_password')}
-                id="confirm_password"
+                {...register('password_confirmation')}
+                id="password_confirmation"
                 placeholder="••••••••"
                 type="password"
                 autoCapitalize="none"
@@ -162,9 +150,9 @@ export const RegisterAuthForm = ({
                 autoCorrect="off"
                 disabled={isSubmitting}
               />
-              {errors.confirm_password && (
+              {errors.password_confirmation && (
                 <span className="text-destructive text-xs">
-                  {errors.confirm_password?.message}
+                  {errors.password_confirmation?.message}
                 </span>
               )}
             </div>

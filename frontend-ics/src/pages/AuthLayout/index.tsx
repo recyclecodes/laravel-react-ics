@@ -35,8 +35,8 @@ export default function AuthPage() {
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[450px]">
 
                 <Routes>
+                  {/* <Route path={'/'} element={<LoginAuthForm />} /> */}
                   <Route path={'/'} element={<LoginAuthForm />} />
-                  <Route path={'/login'} element={<LoginAuthForm />} />
                   <Route path={'/register'} element={<RegisterAuthForm />} />
                 </Routes>
 

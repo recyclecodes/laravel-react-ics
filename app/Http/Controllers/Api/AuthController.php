@@ -25,7 +25,7 @@ class AuthController extends Controller
             if (Auth::attempt(['email' => $email, 'password' => $password])) {
                 $user = Auth::user();
                 $success['token'] = $user->createToken('MyToken')->accessToken;
-                $success['name'] = $user->name;
+                $success['name'] = $user;
 
                 DB::commit();
                 return $this->sendResponse($success, 'User login successful.');
