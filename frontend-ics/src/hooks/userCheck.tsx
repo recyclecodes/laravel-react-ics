@@ -1,1 +1,2 @@
-export const userCheck = localStorage.getItem('token');
+export const token = localStorage.getItem('token');
+export const storedUser = localStorage.getItem('user');

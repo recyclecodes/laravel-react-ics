@@ -1,28 +1,34 @@
-// import { User } from '@/types/User';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, PropsWithChildren, useState } from 'react';
+import { User } from '../types/User';
+import { storedUser, token } from '@/hooks';
 
-export const AuthContext = createContext<AuthContextProps | null>(null);
+export const AuthContext = createContext<User | null>(null);
 
-interface  AuthContextProps {
-    isSignedIn?: boolean;
+type AuthProviderProps = PropsWithChildren & {
+  isSignedIn?: boolean;
+};
+
+export default function AuthProvider({
+  children,
+  isSignedIn,
+}: AuthProviderProps) {
+  const [user] = useState<User | null>(
+    isSignedIn && token && storedUser ? { id: JSON.parse(storedUser).id } : null
+  );
+
+  console.log('User state:', user);
+
+  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
 
-interface AuthProviderProps {
-  children: React.ReactNode;
-  
-}
+// export const useAuth = () => {
 
-export default function AuthProvider({ children }: AuthProviderProps) {
-  const [isSignedIn, setIsSignedIn] = useState<AuthContextProps["isSignedIn"]>(false)
+//     const context = useContext(AuthContext);
+//     console.log("Auth context:", context);
 
-  useEffect(() => {
-    const token = window.localStorage.getItem('token');
-    const storedUser = window.localStorage.getItem('user');
+//     if (context === undefined) {
+//       throw new Error('useAuth must be used within an AuthProvider');
+//     }
 
-   
-      setIsSignedIn(!!(!isSignedIn && token && storedUser));
-  }, []);
-
-  return <AuthContext.Provider value={{isSignedIn}}>{children}</AuthContext.Provider>;
-}
-
+//     return context;
+//   };

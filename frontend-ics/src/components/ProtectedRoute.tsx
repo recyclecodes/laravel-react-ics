@@ -15,7 +15,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
       console.log(user)
       navigate('/login', { replace: true });
     }
-  }, [navigate, user]);
+  }, [user, navigate]);
 
   return children;
 }
