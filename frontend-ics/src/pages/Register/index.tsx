@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterFields, registerSchema } from '@/lib/zod';
 import { useState } from 'react';
 import Axios from '@/lib/axios';
+import { Link } from 'react-router-dom';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -49,14 +50,11 @@ export const RegisterAuthForm = ({
         </h1>
         <p className="text-sm text-muted-foreground">
           Already have an account?{' '}
-          <a
-            href="
-          /login"
-          >
+          <Link to="/login">
             <span className="text-primary hover:underline cursor-pointer">
               Sign-in
-            </span>
-          </a>
+            </span>{' '}
+          </Link>
         </p>
       </div>
       <div className={cn('grid gap-6', className)} {...props}>

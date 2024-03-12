@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UpdateItemRequest;
+use DB;
 
 class ItemController extends Controller
 {
@@ -30,15 +31,41 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreItemRequest $request)
+    public function store(StoreItemRequest $request): JsonResponse
     {
-        // $input = $request->all();
-        // DB::beginTransaction()
-        // try{
-        //     $input['name']
+
+        // try {
+        //     DB::transaction(function() {
+
+        //     })
+        // }
+        // catch(\Exception $e) {
+
         // }
 
-        
+        DB::beginTransaction();
+        try {
+            $input = $request->all();
+            $item = Item::create($input);
+
+            if ($item) {
+                DB::commit();
+
+                return $this->sendResponse(new ItemResource($item), 'Item saved successfully', 201);
+
+
+            } else {
+                DB::rollBack();
+
+                return $this->sendError(null, 'Failed to save item', 409);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $this->sendError(null, $e->getMessage());
+        }
+
+
     }
 
     /**
@@ -46,7 +73,13 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        $item->id;
+
+        if (is_null($item)) {
+            return $this->sendError('Item not found');
+        }
+        return $this->sendResponse(new ItemResource($item), 'Item retrieved successfully', 201);
+
     }
 
     /**
@@ -62,14 +95,31 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $input = $request->all();
+
+            $item->name = $input['name'];
+            $item->description = $input['description'];
+            $item::update($input);
+
+            DB::commit();
+
+            return $this->sendResponse(new ItemResource($item), 'Item updated successfully', 202);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $this->sendError(null, $e->getMessage());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Item $item)
+    public function archive(Item $item)
     {
-        //
+        $item->id;
+        $item->delete();
+        return response()->json([], 204);
     }
 }

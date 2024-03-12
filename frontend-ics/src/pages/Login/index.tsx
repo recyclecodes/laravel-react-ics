@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginFields, loginSchema } from '@/lib/zod';
 import { useState } from 'react';
 import Axios from '@/lib/axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -22,6 +23,7 @@ export const LoginAuthForm = ({ className, ...props }: UserAuthFormProps) => {
     resolver: zodResolver(loginSchema),
   });
 
+  const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePassVisiblity = () => {
     setPasswordShown(passwordShown ? false : true);
@@ -33,9 +35,9 @@ export const LoginAuthForm = ({ className, ...props }: UserAuthFormProps) => {
       const user = await Axios.post('/login', data);
       window.localStorage.setItem('token', user.data.data.token);
       window.localStorage.setItem('user', JSON.stringify(user.data.data.name));
-
-      console.log('user >>>>>>', JSON.stringify(user.data.data.name));
-      console.log(data);
+      navigate('/dashboard');
+      // console.log('user >>>>>>', JSON.stringify(user.data.data.name));
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -49,11 +51,11 @@ export const LoginAuthForm = ({ className, ...props }: UserAuthFormProps) => {
         </h1>
         <p className="text-sm text-muted-foreground">
           Don't have an account?{' '}
-          <a href="/register">
+          <Link to="/register">
             <span className="text-primary hover:underline cursor-pointer">
               Sign-up
-            </span>
-          </a>
+            </span>{' '}
+          </Link>
         </p>
       </div>
       <div className={cn('grid gap-6', className)} {...props}>
@@ -122,11 +124,11 @@ export const LoginAuthForm = ({ className, ...props }: UserAuthFormProps) => {
                 'Login'
               )}
             </Button>
-            {errors.root && (
+            {/* {errors.root && (
               <span className="text-destructive text-xs">
                 {errors.root?.message}
               </span>
-            )}
+            )} */}
           </div>
         </form>
       </div>
