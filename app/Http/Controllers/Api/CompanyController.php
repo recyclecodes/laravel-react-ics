@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ItemResource;
-use App\Models\Item;
-use App\Http\Requests\StoreItemRequest;
+use App\Http\Resources\CompanyResource;
+use App\Models\Company;
 use Illuminate\Http\JsonResponse;
-use App\Http\Requests\UpdateItemRequest;
+use App\Http\Requests\StoreCompanyRequest;
+use App\Http\Requests\UpdateCompanyRequest;
 use DB;
 
-class ItemController extends Controller
+class CompanyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(): JsonResponse
     {
-        $item = Item::all();
-        return $this->sendResponse(ItemResource::collection($item), 'Items retrieve successfully');
+        $company = Company::all();
+        return $this->sendResponse(CompanyResource::collection($company), 'Companies retrieve successgully');
     }
 
     /**
@@ -31,7 +31,7 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreItemRequest $request): JsonResponse
+    public function store(StoreCompanyRequest $request): JsonResponse
     {
 
         // try {
@@ -46,18 +46,18 @@ class ItemController extends Controller
         DB::beginTransaction();
         try {
             $input = $request->all();
-            $item = Item::create($input);
+            $company = Company::create($input);
 
-            if ($item) {
+            if ($company) {
                 DB::commit();
 
-                return $this->sendResponse(new ItemResource($item), 'Item saved successfully', 201);
+                return $this->sendResponse(new CompanyResource($company), 'Company saved successfully', 201);
 
 
             } else {
                 DB::rollBack();
 
-                return $this->sendError(null, 'Failed to save item', 409);
+                return $this->sendError(null, 'Failed to save company', 409);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -71,21 +71,21 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Item $item)
+    public function show(Company $company)
     {
-        $item->id;
+        $company->id;
 
-        if (is_null($item)) {
-            return $this->sendError('Item not found');
+        if (is_null($company)) {
+            return $this->sendError('Company not found');
         }
-        return $this->sendResponse(new ItemResource($item), 'Item retrieved successfully', 201);
+        return $this->sendResponse(new CompanyResource($company), 'Company retrieved successfully', 201);
 
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Item $item)
+    public function edit(Company $company)
     {
         //
     }
@@ -93,19 +93,19 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateItemRequest $request, Item $item)
+    public function update(UpdateCompanyRequest $request, Company $company)
     {
         DB::beginTransaction();
         try {
             $input = $request->all();
 
-            $item->name = $input['name'];
-            $item->description = $input['description'];
-            $item::update($input);
+            $company->name = $input['name'];
+            $company->description = $input['description'];
+            $company::update($input);
 
             DB::commit();
 
-            return $this->sendResponse(new ItemResource($item), 'Item updated successfully', 202);
+            return $this->sendResponse(new CompanyResource($company), 'Company updated successfully', 202);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -116,10 +116,10 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function archive(Item $item)
+    public function archive(Company $company)
     {
-        $item->id;
-        $item->delete();
+        $company->id;
+        $company->delete();
         return response()->json([], 204);
     }
 }

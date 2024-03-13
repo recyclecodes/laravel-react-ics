@@ -1,15 +1,12 @@
-import { useContext } from "react";
-import { AuthContext } from "../AuthProvider";
+import { useContext } from 'react';
+import { AuthContext } from '../AuthProvider';
 
 export const useAuth = () => {
-  const user = useContext(AuthContext);
-
-  if (user === null) {
+  const context = useContext(AuthContext);
+  console.log(context);
+  if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
 
-  // Check if user is signed in based on whether user object is present
-  const isSignedIn = user !== null;
-
-  return { user, isSignedIn };
+  return context;
 };

@@ -21,14 +21,3 @@ export default function AuthProvider({
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
 
-// export const useAuth = () => {
-
-//     const context = useContext(AuthContext);
-//     console.log("Auth context:", context);
-
-//     if (context === undefined) {
-//       throw new Error('useAuth must be used within an AuthProvider');
-//     }
-
-//     return context;
-//   };

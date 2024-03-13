@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ItemResource;
-use App\Models\Item;
-use App\Http\Requests\StoreItemRequest;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
+
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Http\Requests\UpdateItemRequest;
+use App\Http\Resources\UserResource;
 use DB;
 
-class ItemController extends Controller
+class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): JsonResponse
     {
-        $item = Item::all();
-        return $this->sendResponse(ItemResource::collection($item), 'Items retrieve successfully');
+        $user = User::all();
+        return $this->sendResponse(UserResource::collection($user), 'Users retrieve successgully');
     }
 
     /**
@@ -31,7 +30,7 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreItemRequest $request): JsonResponse
+    public function store(StoreUserRequest $request): JsonResponse
     {
 
         // try {
@@ -46,18 +45,18 @@ class ItemController extends Controller
         DB::beginTransaction();
         try {
             $input = $request->all();
-            $item = Item::create($input);
+            $user = User::create($input);
 
-            if ($item) {
+            if ($user) {
                 DB::commit();
 
-                return $this->sendResponse(new ItemResource($item), 'Item saved successfully', 201);
+                return $this->sendResponse(new UserResource($user), 'User saved successfully', 201);
 
 
             } else {
                 DB::rollBack();
 
-                return $this->sendError(null, 'Failed to save item', 409);
+                return $this->sendError(null, 'Failed to save user', 409);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -71,21 +70,21 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Item $item)
+    public function show(User $user)
     {
-        $item->id;
+        $user->id;
 
-        if (is_null($item)) {
-            return $this->sendError('Item not found');
+        if (is_null($user)) {
+            return $this->sendError('User not found');
         }
-        return $this->sendResponse(new ItemResource($item), 'Item retrieved successfully', 201);
+        return $this->sendResponse(new UserResource($user), 'User retrieved successfully', 201);
 
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Item $item)
+    public function edit(User $user)
     {
         //
     }
@@ -93,19 +92,19 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateItemRequest $request, Item $item)
+    public function update(UpdateUserRequest $request, User $user)
     {
         DB::beginTransaction();
         try {
             $input = $request->all();
 
-            $item->name = $input['name'];
-            $item->description = $input['description'];
-            $item::update($input);
+            $user->name = $input['name'];
+            $user->email = $input['email'];
+            $user::update($input);
 
             DB::commit();
 
-            return $this->sendResponse(new ItemResource($item), 'Item updated successfully', 202);
+            return $this->sendResponse(new UserResource($user), 'User updated successfully', 202);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -116,10 +115,10 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function archive(Item $item)
+    public function archive(User $user)
     {
-        $item->id;
-        $item->delete();
+        $user->id;
+        $user->delete();
         return response()->json([], 204);
     }
 }
