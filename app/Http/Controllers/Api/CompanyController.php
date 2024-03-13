@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
+use App\Http\Controllers\Controller;
 use DB;
 
 class CompanyController extends Controller
@@ -25,7 +26,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        return response('hello world', 500);
     }
 
     /**
@@ -33,16 +34,7 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request): JsonResponse
     {
-
-        // try {
-        //     DB::transaction(function() {
-
-        //     })
-        // }
-        // catch(\Exception $e) {
-
-        // }
-
+        
         DB::beginTransaction();
         try {
             $input = $request->all();
@@ -51,7 +43,7 @@ class CompanyController extends Controller
             if ($company) {
                 DB::commit();
 
-                return $this->sendResponse(new CompanyResource($company), 'Company saved successfully', 201);
+                return $this->sendResponse(new CompanyResource($company), 'Company saved successfully', 200);
 
 
             } else {

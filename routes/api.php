@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CompanyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,16 +26,17 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 //Prvate Routes
-Route::group(['middleware' => 'role:Super Admin'], function() {
-    Route::get('/super-admin', function() {
+Route::group(['middleware' => 'role:Super Admin'], function () {
+    Route::get('/super-admin', function () {
+        Route::post('/add-company', [CompanyController::class, 'store']);
         return response([
             'res' => 'Welcome!'
         ]);
     });
 });
 
-Route::group(['middleware' => 'role:Super Admin', 'role: Admin'], function() {
-    Route::get('/admin', function() {
+Route::group(['middleware' => 'role:Super Admin', 'role: Admin'], function () {
+    Route::get('/admin', function () {
         return response([
             'res' => 'Welcome!'
         ]);

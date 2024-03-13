@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginFields, loginSchema } from '@/lib/zod';
 import { useState } from 'react';
 import Axios from '@/lib/axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -23,6 +23,7 @@ export const LoginAuthForm = ({ className, ...props }: UserAuthFormProps) => {
     resolver: zodResolver(loginSchema),
   });
 
+  const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePassVisiblity = () => {
     setPasswordShown(passwordShown ? false : true);
@@ -34,6 +35,7 @@ export const LoginAuthForm = ({ className, ...props }: UserAuthFormProps) => {
       const user = await Axios.post('/login', data);
       localStorage.setItem('token', user.data.data.token);
       localStorage.setItem('user', JSON.stringify(user.data.data.name));
+      navigate('/dashboard');
     } catch (error) {
       console.log(error);
     }
