@@ -2,10 +2,13 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Company;
+use Laravel\Passport\Passport;
+use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StoreCompanyTest extends TestCase
 {
@@ -14,6 +17,12 @@ class StoreCompanyTest extends TestCase
      */
     public function test_store_company(): void
     {
+
+        // Passport::actingAs(
+        //    $user=User::where('role', 'Super Admin')->orderBy('id', 'desc')->first()
+        //    $this->actingAs($user, 'api');
+        // );
+
         $company = [
             'name' => 'Empresa de Teste',
             'description' => 'This is a description',

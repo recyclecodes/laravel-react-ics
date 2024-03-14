@@ -66,7 +66,7 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         $company->id;
-
+        
         if (is_null($company)) {
             return $this->sendError('Company not found');
         }
@@ -85,15 +85,17 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCompanyRequest $request, Company $company)
+    public function update(UpdateCompanyRequest $request, Company $company,$id)
     {
         DB::beginTransaction();
+        
         try {
-            $input = $request->all();
 
+            $input = $request->all();
+            $company = Company::find($id);
             $company->name = $input['name'];
             $company->description = $input['description'];
-            $company::update($input);
+            $company->save();
 
             DB::commit();
 
@@ -108,10 +110,10 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function archive(Company $company)
+    public function archive(Company $company,$id)
     {
-        $company->id;
+        $company = Company::find($id);
         $company->delete();
-        return response()->json([], 204);
+        return $this->sendResponse('Company archived successfully', 204);
     }
 }

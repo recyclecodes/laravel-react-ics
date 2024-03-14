@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use DB;
+use App\Models\User;
+use Illuminate\Http\Request;
+
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Models\User;
-
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use App\Http\Resources\UserResource;
-use DB;
 
 class UserController extends Controller
 {
@@ -72,12 +73,19 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $user->id;
+        $user = User::with('company')->find($user->id);
 
-        if (is_null($user)) {
-            return $this->sendError('User not found');
+        $data[] = array(
+            "name" => $user["name"],
+            "email" => $user["email"],
+            'company' => $user["company"]['name']
+
+        );
+
+        if (is_null($data)) {
+            return $this->sendError('Admin not found');
         }
-        return $this->sendResponse(new UserResource($user), 'User retrieved successfully', 201);
+        return $this->sendResponse($data, 'User retrieved successfully', 201);
 
     }
 
