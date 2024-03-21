@@ -42,7 +42,6 @@ export function RecentTransactions() {
           </p>
         </div>
         <div className="ml-auto font-medium">
-          {' '}
           <Button>View</Button>
         </div>
       </div>
@@ -56,7 +55,6 @@ export function RecentTransactions() {
           <p className="text-sm text-muted-foreground">Company Two</p>
         </div>
         <div className="ml-auto font-medium">
-          {' '}
           <Button>View</Button>
         </div>
       </div>
@@ -70,7 +68,6 @@ export function RecentTransactions() {
           <p className="text-sm text-muted-foreground">Company One</p>
         </div>
         <div className="ml-auto font-medium">
-          {' '}
           <Button>View</Button>
         </div>
       </div>

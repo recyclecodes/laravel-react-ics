@@ -1,12 +1,19 @@
-import TeamSwitcher from "./components/team-switcher";
+import TeamSwitcher from './components/team-switcher';
 // import { MainNav } from "./components/main-nav";
 // import { Button } from "@/components/ui/button";
-import { UserNav } from "./components/user-nav";
+import { UserNav } from './components/user-nav';
 // import { CalendarDateRangePicker } from "./components/date-range-picker";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Icons } from "@/components/icons";
-import { RecentTransactions } from "./components/recent-transfers";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Icons } from '@/components/icons';
+import { RecentTransactions } from './components/recent-transfers';
+import { Overview } from './components/overview';
 
 const Dashboard = () => {
   return (
@@ -33,7 +40,6 @@ const Dashboard = () => {
             <TeamSwitcher />
             {/* <MainNav className="mx-6" /> */}
             <div className="ml-auto flex items-center space-x-4">
-
               <UserNav />
             </div>
           </div>
@@ -78,7 +84,7 @@ const Dashboard = () => {
                     >
                       <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                     </svg> */}
-                    <Icons.pesoSign className="h-3 w-3 text-muted-foreground"/>
+                    <Icons.pesoSign className="h-3 w-3 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">₱45,231.89</div>
@@ -89,9 +95,7 @@ const Dashboard = () => {
                 </Card>
                 <Card className="col-span-2 md:col-span-1">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Users
-                    </CardTitle>
+                    <CardTitle className="text-sm font-medium">Users</CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -140,12 +144,12 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4">
+                <Card className="md:col-span-4 md:grid hidden">
                   <CardHeader>
                     <CardTitle>Overview</CardTitle>
                   </CardHeader>
                   <CardContent className="pl-2">
-                    {/* <Overview /> */}
+                    <Overview />
                   </CardContent>
                 </Card>
                 <Card className="lg:col-span-3 md:col-span-4 col-span-4">
