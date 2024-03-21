@@ -11,8 +11,8 @@ export default function AuthLayout() {
         <img src="" alt="" />
         <img src="" alt="" />
       </div>
-      <div className="container relative  h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+      <div className="container relative  h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 px-0">
+        <div className="relative hidden h-full flex-col bg-muted text-white lg:flex dark:border-r">
           <div className="absolute inset-0 bg-zinc-900" />
           <ModeToggle />
           <div className="relative z-20 flex items-center text-lg font-medium">
@@ -29,9 +29,11 @@ export default function AuthLayout() {
               </blockquote> */}
           </div>
         </div>
-        <div className="lg:p-8">
-          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[450px]">
+        <div className="lg:w-full sm:w-[550px] md:pt-0 lg:pt-0 mx-auto flex flex-col justify-between h-screen">
+          <div className="border-primary h-[60vh] bg-primary rounded-b-[85px]"></div>
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 relative ">
             <Outlet />
+
             {/* <p className="px-8 text-center text-sm text-muted-foreground">
                 By clicking continue, you agree to our{" "}
                 <Link
@@ -50,6 +52,7 @@ export default function AuthLayout() {
                 .
               </p> */}
           </div>
+          <div className="border-primary h-[66px] bg-primary rounded-t-[60px]"></div>
         </div>
       </div>
     </>

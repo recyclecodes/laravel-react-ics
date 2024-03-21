@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use DB;
-use App\Models\Adminuser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AdminUserResource;
+
 use App\Http\Requests\StoreAdminUserRequest;
 use App\Http\Requests\UpdateAdminUserRequest;
 
@@ -16,10 +19,24 @@ class AdminUserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $admin = Adminuser::all();
-        return $this->sendResponse(AdminUserResource::collection($admin), 'Users retrieve successgully');
+
+        // search and query
+        // $admin = User::when($request->filled('search'), function ($seach) use ($request) {
+        //     $seach->where('name', 'LIKE', '%' . $request->search . '%');
+        // })
+        //     ->when($request->filled('role'), function ($query) use ($request) {
+        //         $query->whereHas('roles', function ($query) use ($request) {
+        //             $query->where('name', $request->role);
+        //         });
+        //     })->with('roles')->get();
+
+
+        $admin = User::with('roles')->whereHas('roles', function ($query) {
+            $query->where('name', 'Admin');
+        })->get();
+        return $this->sendResponse($admin, 'Admin users retrieve successgully');
     }
 
     /**
@@ -33,17 +50,17 @@ class AdminUserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAdminUserRequest $request): JsonResponse
+    public function store(StoreUserRequest $request): JsonResponse
     {
         DB::beginTransaction();
         try {
             $input = $request->all();
-            $admin = Adminuser::create($input);
+            $admin = User::create($input);
 
             if ($admin) {
                 DB::commit();
 
-                return $this->sendResponse(new AdminUserResource($admin), 'Admin admin saved successfully', 201);
+                return $this->sendResponse(new UserResource($admin), 'Admin admin saved successfully', 201);
 
 
             } else {
@@ -63,21 +80,12 @@ class AdminUserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Adminuser $admin)
+    public function show(User $admin)
     {
         // $admin->id;
-        $adminuser = Adminuser::with('company')->find($admin->id);
+        $data = User::with('company')->find($admin->id);
 
-        $data[] = array(
-            "name" => $adminuser["name"],
-            "email" => $adminuser["email"],
-            'company' => $adminuser["company"]['name']
-
-        );
-
-        if (is_null($data)) {
-            return $this->sendError('Admin not found');
-        }
+      
         return $this->sendResponse($data, 'User retrieved successfully', 201);
 
     }
@@ -92,12 +100,12 @@ class AdminUserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAdminUserRequest $request, Adminuser $admin, $id)
+    public function update(UpdateUserRequest $request, User $admin, $id)
     {
         DB::beginTransaction();
         try {
             $input = $request->all();
-            $admin = Adminuser::find($id);
+            $admin = User::find($id);
             $admin->name = $input['name'];
             $admin->email = $input['email'];
             $admin->contact = $input['contact'];
@@ -105,7 +113,7 @@ class AdminUserController extends Controller
 
             DB::commit();
 
-            return $this->sendResponse(new AdminUserResource($admin), 'Admin User updated successfully', 202);
+            return $this->sendResponse(new UserResource($admin), 'Admin User updated successfully', 202);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -116,10 +124,10 @@ class AdminUserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function archive(Adminuser $admin, $id)
+    public function archive(User $admin, $id)
     {
-        $admin = Adminuser::find($id);
+        $admin = User::find($id);
         $admin->delete();
-        return $this->sendResponse('Admin User archived successfully', 204);
+        return $this->sendResponse('User archived successfully', 204);
     }
 }

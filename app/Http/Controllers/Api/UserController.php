@@ -14,10 +14,12 @@ use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $user = User::all();
-        return $this->sendResponse(UserResource::collection($user), 'Users retrieve successgully');
+        $admin = User::with('roles')->whereHas('roles', function ($query) {
+            $query->where('name', 'User');
+        })->get();
+        return $this->sendResponse($admin, 'Users retrieve successgully');
     }
 
     /**

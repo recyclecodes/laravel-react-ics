@@ -24,9 +24,10 @@ use App\Http\Controllers\Api\CompanyController;
 // });
 
 //Public Routes
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/user/{user}' ,[UserController::class, 'show']);
+Route::get('/user/{user}', [UserController::class, 'show']);
 //Prvate Routes
 //Super Admin Routes
 Route::middleware('auth:api')->group(function () {
@@ -42,13 +43,16 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/admin-user/{admin}', [AdminUserController::class, 'show']);
         Route::post('/update-admin-user/{id}', [AdminUserController::class, 'update']);
         Route::delete('/archive-admin-user/{id}', [AdminUserController::class, 'archive']);
-        
+
     });
 });
 //Admin Routes
 Route::middleware('auth:api')->group(function () {
     Route::middleware('role:Admin')->group(function () {
         Route::post('/update-admin-user/{id}', [AdminUserController::class, 'update']);
+        Route::get('/user', [UserController::class, 'index']);
+        Route::post('/add-user', [UserController::class, 'store']);
+        Route::get('/user/{user}', [UserController::class, 'show']);
     });
 });
 

@@ -1,11 +1,12 @@
 import TeamSwitcher from "./components/team-switcher";
-import { MainNav } from "./components/main-nav";
-import { Search } from "./components/search";
-import { Button } from "@/components/ui/button";
+// import { MainNav } from "./components/main-nav";
+// import { Button } from "@/components/ui/button";
 import { UserNav } from "./components/user-nav";
-import { CalendarDateRangePicker } from "./components/date-range-picker";
+// import { CalendarDateRangePicker } from "./components/date-range-picker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Icons } from "@/components/icons";
+import { RecentTransactions } from "./components/recent-transfers";
 
 const Dashboard = () => {
   return (
@@ -26,25 +27,25 @@ const Dashboard = () => {
           className="hidden dark:block"
         /> */}
       </div>
-      <div className="hidden flex-col md:flex">
+      <div className="flex-col md:flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
             <TeamSwitcher />
-            <MainNav className="mx-6" />
+            {/* <MainNav className="mx-6" /> */}
             <div className="ml-auto flex items-center space-x-4">
-              <Search />
+
               <UserNav />
             </div>
           </div>
         </div>
         <div className="flex-1 space-y-4 p-8 pt-6">
-          <div className="flex items-center justify-between space-y-2">
+          {/* <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
             <div className="flex items-center space-x-2">
               <CalendarDateRangePicker />
               <Button>Download</Button>
             </div>
-          </div>
+          </div> */}
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -59,13 +60,13 @@ const Dashboard = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
+              <div className="grid gap-4 grid-cols-4 md:grid-cols-3 lg:grid-cols-3">
+                <Card className="col-span-4 md:col-span-1">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Total Revenue
+                    <CardTitle className="text-sm font-medium ">
+                      Total Assets
                     </CardTitle>
-                    <svg
+                    {/* <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="none"
@@ -76,19 +77,20 @@ const Dashboard = () => {
                       className="h-4 w-4 text-muted-foreground"
                     >
                       <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                    </svg>
+                    </svg> */}
+                    <Icons.pesoSign className="h-3 w-3 text-muted-foreground"/>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">$45,231.89</div>
+                    <div className="text-2xl font-bold">₱45,231.89</div>
                     <p className="text-xs text-muted-foreground">
                       +20.1% from last month
                     </p>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="col-span-2 md:col-span-1">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Subscriptions
+                      Users
                     </CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -112,9 +114,9 @@ const Dashboard = () => {
                     </p>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="col-span-2 md:col-span-1">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                    <CardTitle className="text-sm font-medium">Items</CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -136,31 +138,6 @@ const Dashboard = () => {
                     </p>
                   </CardContent>
                 </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Active Now
-                    </CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">+573</div>
-                    <p className="text-xs text-muted-foreground">
-                      +201 since last hour
-                    </p>
-                  </CardContent>
-                </Card>
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-4">
@@ -171,15 +148,15 @@ const Dashboard = () => {
                     {/* <Overview /> */}
                   </CardContent>
                 </Card>
-                <Card className="col-span-3">
+                <Card className="lg:col-span-3 md:col-span-4 col-span-4">
                   <CardHeader>
-                    <CardTitle>Recent Sales</CardTitle>
+                    <CardTitle>Recent Transfers</CardTitle>
                     <CardDescription>
-                      You made 265 sales this month.
+                      This month made 265 transfers.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    {/* <RecentSales /> */}
+                    <RecentTransactions />
                   </CardContent>
                 </Card>
               </div>
