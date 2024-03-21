@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UpdateItemRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use DB;
 
 class ItemController extends Controller
@@ -107,10 +109,10 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function archive(Item $item)
+    public function archive(Item $item, $id)
     {
-        $item->id;
-        $item->delete();
-        return response()->json([], 204);
+        $admin = Item::find($id);
+        $admin->delete();
+        return $this->sendResponse('Item archived successfully', 204);
     }
 }

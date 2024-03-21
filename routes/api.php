@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\AdminUserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\AdminUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,9 +59,11 @@ Route::middleware('auth:api')->group(function () {
 //User Routes
 Route::middleware('auth:api')->group(function () {
     Route::middleware('role:User')->group(function () {
-        return response([
-            'res' => 'This route is accessible only to User.'
-        ]);
+        Route::get('/item', [ItemController::class, 'index']);
+        Route::post('/add-item', [ItemController::class, 'store']);
+        Route::get('/item/{item}', [ItemController::class, 'show']);
+        Route::post('/update-item/{id}', [ItemController::class, 'update']);
+        Route::delete('/archive-item/{id}', [ItemController::class, 'archive']);
     });
 });
 
