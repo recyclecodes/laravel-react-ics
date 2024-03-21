@@ -51,8 +51,8 @@ class UserController extends Controller
             $user = User::create($input);
 
             if ($user) {
+                $user->assignRole('User');
                 DB::commit();
-
                 return $this->sendResponse(new UserResource($user), 'User saved successfully', 201);
 
 
@@ -102,15 +102,16 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user,$id)
     {
         DB::beginTransaction();
         try {
             $input = $request->all();
-
+            $user = User::find($id);
             $user->name = $input['name'];
             $user->email = $input['email'];
-            $user::update($input);
+            $user->contact = $input['contact'];
+            $user->save();
 
             DB::commit();
 
@@ -125,10 +126,10 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function archive(User $user)
+    public function archive(User $user, $id)
     {
-        $user->id;
-        $user->delete();
-        return response()->json([], 204);
+        $admin = User::find($id);
+        $admin->delete();
+        return $this->sendResponse('User archived successfully', 204);
     }
 }

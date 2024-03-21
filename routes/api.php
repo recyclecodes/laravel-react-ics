@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\AdminUserController;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
@@ -27,7 +25,6 @@ use App\Http\Controllers\Api\CompanyController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/user/{user}', [UserController::class, 'show']);
 //Prvate Routes
 //Super Admin Routes
 Route::middleware('auth:api')->group(function () {
@@ -53,12 +50,14 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/user', [UserController::class, 'index']);
         Route::post('/add-user', [UserController::class, 'store']);
         Route::get('/user/{user}', [UserController::class, 'show']);
+        Route::post('/update-user/{id}', [UserController::class, 'update']);
+        Route::delete('/archive-user/{id}', [UserController::class, 'archive']);
     });
 });
 
 //User Routes
 Route::middleware('auth:api')->group(function () {
-    Route::middleware('role:Admin')->group(function () {
+    Route::middleware('role:User')->group(function () {
         return response([
             'res' => 'This route is accessible only to User.'
         ]);

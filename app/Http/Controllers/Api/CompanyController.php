@@ -17,7 +17,8 @@ class CompanyController extends Controller
      */
     public function index(): JsonResponse
     {
-        $company = Company::all();
+        // $company = Company::all();
+        $company = Company::with('users')->get();
         return $this->sendResponse(CompanyResource::collection($company), 'Companies retrieve successgully');
     }
 

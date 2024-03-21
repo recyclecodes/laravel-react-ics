@@ -34,15 +34,6 @@ class ItemController extends Controller
     public function store(StoreItemRequest $request): JsonResponse
     {
 
-        // try {
-        //     DB::transaction(function() {
-
-        //     })
-        // }
-        // catch(\Exception $e) {
-
-        // }
-
         DB::beginTransaction();
         try {
             $input = $request->all();
@@ -101,7 +92,7 @@ class ItemController extends Controller
 
             $item->name = $input['name'];
             $item->description = $input['description'];
-            $item::update($input);
+            $item->save();
 
             DB::commit();
 
